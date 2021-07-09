@@ -30,4 +30,22 @@ class AccountsController extends Controller
             return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
     }
+
+    public function show($id)
+    {
+        try {
+            $data = Account::whereId($id)->first();
+            if ($data) {
+                $data['status'] = 200;
+                return response()->json($data);
+            } else {
+                $data['status'] = 201;
+                $data['message'] = "Oops! Something went wrong";
+                return response()->json($data);
+            }
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+    }
 }

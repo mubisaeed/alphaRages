@@ -20,6 +20,9 @@
 
     <!-- Theme JS files -->
     <script src="{{asset('assets/js/app.js')}}"></script>
+    <script src="{{asset('assets/global_assets/js/demo_pages/picker_date.js')}}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
     <!-- /theme JS files -->
 
 </head>
@@ -76,6 +79,7 @@
 
 </div>
 <!-- /page content -->
+
 
 </body>
 </html>

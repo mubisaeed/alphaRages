@@ -5,6 +5,9 @@ use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RatesController;
+use App\Http\Controllers\SendersController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +33,8 @@ Route::group(['middleware' => ['auth']], function()
 {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+
     Route::group(['prefix' => 'client'], function()
     {
         Route::get('/', [ClientsController::class, 'index'])->name('clients');
@@ -37,6 +42,14 @@ Route::group(['middleware' => ['auth']], function()
         Route::post('/store', [ClientsController::class, 'store'])->name('store-client');
         Route::get('/show/{id}', [ClientsController::class, 'show'])->name('show-client');
     });
+
+//    Route::group(['prefix' => 'sender'], function()
+//    {
+//        Route::get('/', [SendersController::class, 'index'])->name('senders');
+//        Route::get('/create', [ SendersController::class, 'create'])->name('create-sender');
+//        Route::post('/store', [SendersController::class, 'store'])->name('store-sender');
+//        Route::get('/show/{id}', [SendersController::class, 'show'])->name('show-sender');
+//    });
 
     Route::group(['prefix' => 'account'], function()
     {
@@ -51,6 +64,8 @@ Route::group(['middleware' => ['auth']], function()
         Route::get('/', [InvoiceController::class, 'index'])->name('invoices');
         Route::get('/create', [ InvoiceController::class, 'create'])->name('create-invoice');
         Route::post('/', [InvoiceController::class, 'store'])->name('store-invoice');
+        Route::post('/rate', [InvoiceController::class, 'rate'])->name('rate-subTotal');
     });
+
 });
 

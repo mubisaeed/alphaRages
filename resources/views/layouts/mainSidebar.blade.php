@@ -58,7 +58,7 @@
                     <ul class="nav nav-group-sub" data-submenu-title="Page layouts">
                         <li class="nav-item"><a href="{{ route('invoices') }}" class="nav-link">Invoices</a></li>
                         <li class="nav-item"><a href="layout_no_header.html" class="nav-link">Clients</a></li>
-                        <li class="nav-item"><a href="layout_no_footer.html" class="nav-link">My Details</a></li>
+                        <li class="nav-item"><a href="{{ route('profile') }}" class="nav-link">My Details</a></li>
                     </ul>
                 </li>
                 <!-- /layout -->

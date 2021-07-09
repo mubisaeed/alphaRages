@@ -53,6 +53,7 @@ class ClientsController extends Controller
             if ($client) {
                 $data['status'] = 200;
                 $data['company_name'] = $client->company_name;
+                $data['id'] = $client->id;
                 $data['first_name'] = $client->first_name;
                 $data['last_name'] = $client->last_name;
                 $data['full_name'] = $client->FullName;

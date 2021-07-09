@@ -18,8 +18,8 @@ class CreateSenderTable extends Migration
             $table->string('name');
             $table->string('country');
             $table->string('email');
-            $table->string('address1');
-            $table->string('address2');
+            $table->string('address1')->nullable();
+            $table->string('address2')->nullable();
             $table->string('phone');
             $table->string('website');
             $table->string('registration_number');

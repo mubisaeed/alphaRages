@@ -22,7 +22,8 @@
             </ul>
         </div>
     @endif
-    <form>
+    <form action="{{ route('store-invoice') }}" method="POST">
+        @csrf
         <!-- Page header -->
         <div class="page-header">
             <div class="page-header-content container d-sm-flex">
@@ -31,7 +32,7 @@
                 </div>
 
                 <div class="my-sm-auto ml-sm-auto mb-3 mb-sm-0">
-                    <button type="button" class="btn w-100 w-sm-auto" style="background-color: #EEEEEE; color: black">
+                    <button type="submit" class="btn w-100 w-sm-auto" style="background-color: #EEEEEE; color: black">
                         Save
                     </button>
                     <button type="button" class="btn btn-primary w-100 w-sm-auto">Download</button>
@@ -54,13 +55,13 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6 ">
+                <div class="col-lg-6 accountInfo">
                     <!-- Vertical form -->
                     <div class="card">
-                        <div class="card-header header-elements-inline" data-toggle="modal"
-                             data-target="#modal-account">
+                        <div class="card-header header-elements-inline">
                             <h5>Account</h5>
                         </div>
+                        <input type="hidden" name="account_id" id="accountId" value="">
                         <div class="collapse show">
                             <div class="card-body">
                                 <h5 class="account_number"></h5>
@@ -80,11 +81,24 @@
                         <div class="card-header header-elements-inline">
                             <h5 class="card-title">From</h5>
                         </div>
+                        <input type="hidden" id="sname" name="sender_name" value="">
+                        <input type="hidden" id="semail" name="sender_email" value="">
+                        <input type="hidden" id="scountry" name="sender_country" value="">
+                        <input type="hidden" id="sphone" name="sender_phone" value="">
+                        <input type="hidden" id="sadd1" name="sender_address1" value="">
+                        <input type="hidden" id="sadd2" name="sender_address2" value="">
+                        <input type="hidden" id="swebsite" name="sender_website" value="">
+                        <input type="hidden" id="stax" name="sender_tax" value="">
 
                         <div class="collapse show">
                             <div class="card-body">
-                                <h5 class="">Sender Name</h5>
-                                <p class="">Phone and other details</p>
+                                <h5 class="sender_name">Sender Name</h5>
+                                <p class="sender_email">Phone and other details</p>
+                                <p class="sender_phone"></p>
+                                <p class="sender_address"></p>
+                                <p class="sender_country"></p>
+                                <p class="sender_website"></p>
+                                <p class="sender_tax"></p>
                             </div>
                         </div>
                     </div>
@@ -98,7 +112,7 @@
                         <div class="card-header header-elements-inline">
                             <h5 class="card-title">To</h5>
                         </div>
-
+                        <input type="hidden" name="recipient_id" id="recipientId" value="">
                         <div class="collapse show">
                             <div class="card-body">
                                 <h5 class="recipient_name">Recipient Name</h5>
@@ -111,207 +125,43 @@
                         </div>
                     </div>
                     <!-- /vertical form -->
-
                 </div>
             </div>
-        </div>
-    </form>
-    <!-- account form -->
-    <div id="modal-account" class="modal fade" tabindex="-1">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
 
-                <!-- Form -->
-                <form class="modal-body form-validate account">
-                    @csrf
-                    <div class="text-center mb-3">
-                        <i class="icon-reading icon-2x text-secondary border-secondary border-3 rounded-pill p-3 mb-3 mt-1"></i>
-                        <h5 class="mb-0">New Account</h5>
-                    </div>
-
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>Bank Selection:</label>
-                        <select class="coolSelect form-control" id="bank_name" name="bank_name">
-                            @foreach($banks as $key => $value)
-                                <option value="{{$value['name']}}">{{$value['name']}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>Account Title:</label>
-                        <input type="text" class="form-control" id="title" name="title" required>
-                    </div>
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>Account No/IBAN:</label>
-                        <input type="text" class="form-control" id="account_number" name="account_number" required>
-                    </div>
-
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>Code Key:</label>
-                        <input type="text" class="form-control" id="code_key" name="code_key" required>
-                    </div>
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>Code Value:</label>
-                        <input type="text" class="form-control" id="code_value" name="code_value" required>
-                    </div>
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>Country:</label>
-                        <select class="coolSelect form-control" id="bank_country" name="country">
-                            <option value="" disabled="">Select Country</option>
-                            @foreach($countries as $key => $value)
-                                <option value="{{$value['name']}}">{{$value['name']}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>City:</label>
-                        <input type="text" class="form-control" id="city" name="city" required>
-                    </div>
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>Address:</label>
-                        <textarea type="text" class="form-control" id="address" name="address" required></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block" id="save_account">Save</button>
-                    </div>
-
-                </form>
-                <!-- /form -->
-
-            </div>
-        </div>
-    </div>
-    <!-- /account form -->
-
-    <!-- Sender form -->
-    <div id="modal-sender" class="modal fade" tabindex="-1">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-
-                <!-- Form -->
-                <form class="modal-body form-validate" action="index.html">
-                    <div class="text-center mb-3">
-                        <i class="icon-reading icon-2x text-secondary border-secondary border-3 rounded-pill p-3 mb-3 mt-1"></i>
-
-                    </div>
-
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-
-                        <input type="text" class="form-control" name="username" placeholder="Username" required>
-                        <div class="form-control-feedback">
-                            <i class="icon-user text-muted"></i>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <input type="password" class="form-control" name="password" placeholder="Password" required>
-                        <div class="form-control-feedback">
-                            <i class="icon-lock2 text-muted"></i>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block">Sign in</button>
-                    </div>
-
-                </form>
-                <!-- /form -->
-
-            </div>
-        </div>
-    </div>
-    <!-- /Sender form -->
-
-    <!-- Client form -->
-    <div id="modal-client" class="modal fade" tabindex="-1">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="text-center mb-3">
-                    <i class="icon-reading icon-2x text-secondary border-secondary border-3 rounded-pill p-3 mb-3 mt-1"></i>
-                    <h5 class="mb-0">Set the client for this invoice</h5>
-                </div>
-                <div>
-                    @foreach($clients as $client)
-                        <div class="text-center mb-3" data-id="{{$client->id}}" style="background-color: #939390FF"
-                             onclick="showClient(this.getAttribute('data-id'))">
-                            <div>
-                                <h5>{{$client->FullName}}</h5>
-                                <p>{{$client->email}}</p>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Invoice Number:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="invoice_number">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Invoice Date:</label>
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                    </span>
+                                    <input type="text" name="invoice_date" class="form-control daterange-single" value="03/18/2013">
+                                </div>
                             </div>
                         </div>
-                    @endforeach
+
+                    </div>
                 </div>
-                <div class="text-center mb-3">
-                    <a class="btn btn-primary secondClient">Create New Client</a>
-                </div>
-
             </div>
+            @include('partials.items')
+
+            @include('partials.modals')
+            <br>
+            @include('partials.invoice_summary')
+
         </div>
-    </div>
-    <!-- /Client form -->
+    </form>
 
-    <!-- Client second form -->
-    <div id="modal-client-second" class="modal fade" tabindex="-1" style="overflow: auto">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <!-- Form -->
-                <form class="modal-body form-validate client-submit">
-                    @csrf
-                    <div class="text-center mb-3">
-                        <i class="icon-reading icon-2x text-secondary border-secondary border-3 rounded-pill p-3 mb-3 mt-1"></i>
-                        <h5 class="mb-0">New Client</h5>
-                    </div>
 
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>Name / Company Name</label>
-                        <input type="text" class="form-control" id="company_name" name="company_name" required>
-                    </div>
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>First Name</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" required>
-                    </div>
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>Last Name</label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" required>
-                    </div>
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>Email Address</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>Country</label>
-                        {{--                                    <input type="text" class="form-control" name="country" required>--}}
-
-                        <select class="coolSelect form-control" id="country" name="country">
-                            @foreach($countries as $key => $value)
-                                <option value="{{$value['name']}}">{{$value['name']}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>Address Line 1</label>
-                        <input type="text" class="form-control" id="address1" name="address1" required>
-                    </div>
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>Address Line 2</label>
-                        <input type="text" class="form-control" id="address2" name="address2" required>
-                    </div>
-                    <div class="form-group form-group-feedback form-group-feedback-left">
-                        <label>Phone</label>
-                        <input type="text" class="form-control" id="phone" name="phone" required>
-                    </div>
-
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block" id="send_form">Submit</button>
-                    </div>
-
-                </form>
-                <!-- /form -->
-            </div>
-        </div>
-    </div>
-    <!-- /Client second form -->
 
 @endsection
 
@@ -322,12 +172,90 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
         $(document).ready(function () {
             $(".imgSrc").hide();
             $(".errorDiv").hide();
-        });
 
+
+            $("#add_item").on("click", function() {
+
+                var newid = 0;
+                $.each($("#tab_logic tr"), function() {
+                    if (parseInt($(this).data("id")) > newid) {
+                        newid = parseInt($(this).data("id"));
+                    }
+                });
+                newid++;
+                var tr = $("<tr></tr>", {
+                    id: "addr"+newid,
+                    "data-id": newid
+                });
+
+                // loop through each td and create new elements with name of newid
+                $.each($("#tab_logic tbody tr:nth(0) td"), function() {
+                    var td;
+                    var cur_td = $(this);
+
+                    var children = cur_td.children();
+
+                    // add new td and element if it has a nane
+                    if ($(this).data("name") !== undefined) {
+                        td = $("<td></td>", {
+                            "data-name": $(cur_td).data("name")
+                        });
+
+                        var c = $(cur_td).find($(children[0]).prop('tagName')).clone().val("");
+                        c.attr("name", $(cur_td).data("name") + newid);
+                        c.appendTo($(td));
+                        td.appendTo($(tr));
+                    } else {
+                        td = $("<td class='subTotal'><span id='mySubtotal'></span></td>", {
+                            'text': $('#tab_logic tr').length
+                        }).appendTo($(tr));
+                    }
+                });
+
+                // add delete button and td
+
+                // $("<td></td>").append(
+                //     $("<button class='btn btn-danger glyphicon glyphicon-remove row-remove'></button>")
+                //         .click(function() {
+                //             $(this).closest("tr").remove();
+                //         })
+                // ).appendTo($(tr));
+
+
+                // add the new row
+                $(tr).appendTo($('#tab_logic'));
+
+                $(tr).find("td button.row-remove").on("click", function() {
+                    $(this).closest("tr").remove();
+                });
+            });
+
+            // Sortable Code
+            var fixHelperModified = function(e, tr) {
+                var $originals = tr.children();
+                var $helper = tr.clone();
+
+                $helper.children().each(function(index) {
+                    $(this).width($originals.eq(index).width())
+                });
+
+                return $helper;
+            };
+
+            $(".table-sortable tbody").sortable({
+                helper: fixHelperModified
+            }).disableSelection();
+
+            $(".table-sortable thead").disableSelection();
+
+
+
+            $("#add_row").trigger("click");
+
+        });
         function readURL(input) {
             $(".imgSrc").show();
             if (input.files && input.files[0]) {
@@ -357,6 +285,18 @@
 
         }
 
+        function showAccount(data_id) {
+            var id = data_id;
+            var Url = '/account/show/' + id;
+            var requestMethod = 'get';
+            var dataParams = {
+                'id': id,
+            };
+            var optionalParams = "accountShow";
+            ajaxFunction(dataParams, Url, requestMethod, optionalParams);
+
+        }
+
         $('#modal-client-second').on('hidden.bs.modal', function () {
             $(this).find('form').trigger('reset');
         })
@@ -370,10 +310,61 @@
                 $('#modal-client-second').modal('show');
             }
         });
+
+        $('#newTaxRate').change(function () {
+            var optValue = $(this).val();
+            if(optValue == "new")
+            {
+                $(this).val("");
+                $('#modal-tax').modal('show');
+            }
+        });
+
+        $('div.accountInfo').click(function () {
+            var accounts = {!! json_encode($accounts, JSON_HEX_TAG) !!};
+            {{--var clients = '{{ $clients }}';--}}
+            // console.log(clients.length);
+            if (accounts.length > 0) {
+                $('#modal-account').modal('show');
+            } else {
+                $('#modal-account-second').modal('show');
+            }
+        });
         $('.secondClient').click(function () {
             $('#modal-client').modal('hide');
             $('#modal-client-second').modal('show');
 
+        });
+
+        $('.secondAccount').click(function () {
+            $('#modal-account').modal('hide');
+            $('#modal-account-second').modal('show');
+
+        });
+
+        $("#save_rate").click(function (e) {
+            e.preventDefault();
+            var tax_name = $("#tax_name").val();
+            var rate_percent = $("#rate_percent").val();
+
+            $('#modal-tax').modal('hide');
+
+            var opt = '';
+            opt += "<option value=" + rate_percent + " selected='selected'>" + tax_name + " </option>";
+            $('#newTaxRate').append(opt);
+
+
+
+            if($('#hiddenSubTotal').val() != "")
+            {
+                $subTotl = $('#hiddenSubTotal').val();
+                $taxValue = $subTotl*rate_percent/100;
+
+                var tax = '';
+                tax += '<p>USD'+" "+$taxValue+'</p>';
+
+                $('#taxx').html(tax);
+            }
         });
 
         $("#save_account").click(function (e) {
@@ -402,6 +393,37 @@
             var optionalParams = "accountSave";
 
             ajaxFunction(dataParams, Url, requestMethod, optionalParams);
+        });
+
+        $("#save_sender").click(function () {
+            var sender_name = $("#sender_name").val();
+            var sender_country = $("#sender_country").val();
+            var sender_email = $("#sender_email").val();
+            var sender_address1 = $("#sender_address1").val();
+            var sender_address2 = $("#sender_address2").val();
+            var sender_phone = $("#sender_phone").val();
+            var sender_website = $("#sender_website").val();
+            var sender_tax = $("#sender_tax").val();
+
+            $('#modal-sender').modal('hide');
+            $('.sender_name').html(sender_name);
+            $('.sender_email').html(sender_email);
+            $('.sender_phone').html(sender_phone);
+            $('.sender_address').html(sender_address1);
+            $('.sender_country').html(sender_country);
+            $('.sender_website').html(sender_website);
+            $('.sender_tax').html(sender_tax);
+
+            $('#sname').val(sender_name);
+            $('#semail').val(sender_email);
+            $('#sphone').val(sender_phone);
+            $('#sadd1').val(sender_address1);
+            $('#sadd2').val(sender_address2);
+            $('#scountry').val(sender_country);
+            $('#swebsite').val(sender_website);
+            $('#stax').val(sender_tax);
+
+
         });
 
         $("#send_form").click(function (e) {
@@ -449,8 +471,9 @@
                             $('.country').html(data.country);
                             $('.recipient_email').html(data.email);
                             $('#modal-client-second').modal('hide');
+                            $('#recipientId').val(data.id);
                         } else {
-                            showError();
+                            showError(data);
                         }
                     }
                     if (optionalParams == "clientShow") {
@@ -462,8 +485,9 @@
                             $('.address2').html(data.address2);
                             $('.country').html(data.country);
                             $('.recipient_email').html(data.email);
+                            $('#recipientId').val(data.id);
                         } else {
-                            showError();
+                            showError(data);
                         }
                     }
                     if (optionalParams == "accountSave") {
@@ -472,8 +496,21 @@
                             $('.bank_name').html(data.bank_name);
                             $('.account_title').html(data.account_title);
                             $('.account_number').html(data.account_number);
+                            $('#accountId').val(data.id);
                         } else {
-                            showError();
+                            showError(data);
+                        }
+                    }
+
+                    if (optionalParams == "accountShow") {
+                        if (data.status == 200) {
+                            $('#modal-account-second').remove();
+                            $('.bank_name').html(data.bank_name);
+                            $('.account_title').html(data.account_title);
+                            $('.account_number').html(data.account_number);
+                            $('#accountId').val(data.id);
+                        } else {
+                            showError(data);
                         }
                     }
 
@@ -481,11 +518,62 @@
             });
         }
 
-        function showError()
+        function showError(data)
         {
             $(".errorDiv").show();
             $('.clientError').html(data.message);
         }
 
+
+        function myRate(id)
+        {
+            var quantity = $("#qty").val();
+            if(quantity)
+            {
+                var rate = document.getElementById(id).value;
+                var rowId = jQuery(this).closest('tr').attr('id');
+
+
+                var dataParams = {
+                    'quantity': quantity,
+                    'rate': rate,
+                };
+                $.ajax({
+                    method: 'POST',
+                    url:"{{ route('rate-subTotal') }}",
+                    data: dataParams,
+                    success: function (data) {
+
+                        var res = '';
+                        res += '<p>USD'+" "+data+'</p>';
+
+                        $('#mySubtotal').html("");
+                        $('#mySubtotal').html(res);
+
+                        $('#invoiceSubTotal').html(res);
+                        $('#invoiceTotal').html(res);
+                        $('#hiddenSubTotal').val(data);
+
+                        if($('#newTaxRate').val() != "")
+                        {
+                            var rate =  $('#newTaxRate').val();
+                            $taxValue = data*rate/100;
+
+                            var tax = '';
+                            tax += '<p>USD'+" "+$taxValue+'</p>';
+
+                            $('#taxx').html(tax);
+                        }
+
+                    }
+                });
+
+            }
+
+
+
+            // var output = document.getElementById("mySubtotal");
+            // output.innerHTML = input;
+        }
     </script>
 @endsection
